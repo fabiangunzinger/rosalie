@@ -181,10 +181,10 @@ class Simulator:
         return df[df[self.time_col].isin(sample_timestamps)].copy()
 
     def _sample_users(self, df, sample_size):
-        """Sample users from dataframe."""
-        unique_ids = df[self.id_col].unique()
-        sample_ids = self.rng.choice(unique_ids, sample_size, replace=False)
-        return df[df[self.id_col].isin(sample_ids)].copy()
+        """Sample users from dataframe more efficiently."""
+        unique_ids = df.index.unique()
+        sample_ids = self.rng.choice(unique_ids, size=sample_size, replace=False)
+        return df.loc[sample_ids].copy()
 
     def _calc_sample_sizes(self):
         """Calculate sample sizes to simulate."""
